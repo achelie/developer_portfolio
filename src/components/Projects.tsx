@@ -14,7 +14,7 @@ export default function Projects() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2 items-start">
-        <aside className="relative lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)] lg:overflow-auto lg:pr-8">
+        <aside className="relative lg:sticky lg:top-24 lg:pr-8">
           <div className="mb-6">
             <div className="text-[56px] lg:text-[88px] font-extrabold text-white/10 leading-none">
               {String(active + 1).padStart(2, '0')}
@@ -31,10 +31,10 @@ export default function Projects() {
                 }`}
               >
                 <div className={`-ml-4 pl-4 border-l-2 ${idx === active ? 'border-white/30' : 'border-white/6'}`}>
-                  <span className={`text-[28px] lg:text-[48px] font-extrabold uppercase tracking-tight ${idx === active ? 'text-white' : 'text-white/70'}`}>
+                  <span className={`block text-[28px] lg:text-[48px] font-extrabold uppercase tracking-tight ${idx === active ? 'text-white' : 'text-white/70'}`}>
                     {project.name}
                   </span>
-                  <span className="text-xs text-white/50">{project.stack?.join(' • ')}</span>
+                  <span className="block text-xs text-white/50 mt-4">{project.stack?.join(' • ')}</span>
                 </div>
               </button>
             ))}
@@ -46,7 +46,7 @@ export default function Projects() {
             <img
               src={activeProject.imageUrl}
               alt={activeProject.name}
-              className="w-full h-[min(70vh,720px)] object-cover block"
+              className="w-full h-auto object-cover block"
               loading="lazy"
             />
 
