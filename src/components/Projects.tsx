@@ -2,7 +2,7 @@ import { projects } from '../data/projects'
 
 export default function Projects() {
   return (
-    <section className="mx-auto w-full max-w-6xl px-6 py-24" id="projects">
+    <section className="w-full px-0 py-24 sm:px-6" id="projects">
       <div className="mb-10 flex items-end justify-between gap-4">
         <h2 className="text-3xl font-semibold text-white sm:text-4xl">项目展示</h2>
         <span className="text-xs uppercase tracking-[0.3em] text-white/45">Works</span>

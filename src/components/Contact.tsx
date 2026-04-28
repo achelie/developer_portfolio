@@ -1,6 +1,6 @@
 export default function Contact() {
   return (
-    <section className="mx-auto flex w-full max-w-6xl justify-end px-6 pb-12" id="contact">
+    <section className="flex w-full justify-end px-0 pb-12 sm:px-6" id="contact">
       <div className="space-y-2 text-right text-sm text-white/80">
         <p>
           邮箱：

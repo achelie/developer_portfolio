@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <header className="sticky top-0 z-20 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-6 backdrop-blur-sm">
+    <header className="sticky top-0 z-20 flex w-full items-center justify-between px-0 py-6 backdrop-blur-sm sm:px-6">
       <span className="text-sm font-semibold tracking-[0.25em] text-white/80">DEWTTOW</span>
       <a
         href="#"

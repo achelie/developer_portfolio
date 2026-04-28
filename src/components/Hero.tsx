@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative mx-auto flex min-h-[72vh] w-full max-w-6xl items-center px-6 pb-20 pt-8">
+    <section className="relative flex min-h-[72vh] w-full items-center px-0 pb-20 pt-8 sm:px-6">
       <div className="max-w-2xl text-left">
         <p className="mb-4 inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1 text-xs uppercase tracking-[0.28em] text-cyan-200">
           Portfolio 2026
@@ -13,7 +13,7 @@ export default function Hero() {
         </p>
       </div>
 
-      <p className="absolute bottom-6 left-6 origin-center animate-spin-slow text-xs uppercase tracking-[0.35em] text-white/40">
+      <p className="absolute bottom-6 left-0 origin-center animate-spin-slow text-xs uppercase tracking-[0.35em] text-white/40 sm:left-6">
         build • learn • iterate •
       </p>
     </section>

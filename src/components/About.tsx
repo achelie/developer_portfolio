@@ -2,7 +2,7 @@ import { skills } from '../data/skills'
 
 export default function About() {
   return (
-    <section className="mx-auto w-full max-w-6xl px-6 py-24" id="about">
+    <section className="w-full px-0 py-24 sm:px-6" id="about">
       <div className="mb-10 flex items-end justify-between gap-4">
         <h2 className="text-3xl font-semibold text-white sm:text-4xl">关于我</h2>
         <span className="text-xs uppercase tracking-[0.3em] text-white/45">Skills</span>
