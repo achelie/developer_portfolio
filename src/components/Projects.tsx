@@ -1,10 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { projects } from '../data/projects'
 
 export default function Projects() {
   const [active, setActive] = useState(0)
+  const [displayedIndex, setDisplayedIndex] = useState(0)
+  const [isVisible, setIsVisible] = useState(true)
 
-  const activeProject = projects[active] || projects[0]
+  useEffect(() => {
+    setIsVisible(false)
+
+    const timer = window.setTimeout(() => {
+      setDisplayedIndex(active)
+      setIsVisible(true)
+    }, 180)
+
+    return () => window.clearTimeout(timer)
+  }, [active])
+
+  const activeProject = projects[displayedIndex] || projects[0]
 
   return (
     <section className="w-full px-0 py-24 sm:px-6" id="projects">
@@ -25,7 +38,9 @@ export default function Projects() {
             {projects.map((project, idx) => (
               <button
                 key={project.id}
-                onClick={() => setActive(idx)}
+                onMouseEnter={() => setActive(idx)}
+                onFocus={() => setActive(idx)}
+                onTouchStart={() => setActive(idx)}
                 className={`text-left group flex flex-col items-start gap-2 transition-all duration-300 focus:outline-none ${
                   idx === active ? 'opacity-100' : 'opacity-40'
                 }`}
@@ -42,17 +57,23 @@ export default function Projects() {
         </aside>
 
         <div className="relative lg:pl-8">
-          <div className="relative overflow-hidden rounded-[20px] border border-white/10 bg-black">
+          <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] border border-white/10 bg-black">
             <img
               src={activeProject.imageUrl}
               alt={activeProject.name}
-              className="w-full h-auto object-cover block"
+              className={`h-full w-full object-cover block transition-opacity duration-300 ${
+                isVisible ? 'opacity-100' : 'opacity-0'
+              }`}
               loading="lazy"
             />
 
             <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(0,0,0,0.6))]" />
 
-            <div className="absolute left-6 bottom-6 right-6 pointer-events-auto">
+            <div
+              className={`absolute left-6 bottom-6 right-6 pointer-events-auto transition-opacity duration-300 ${
+                isVisible ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
               <div className="max-w-[560px] bg-gradient-to-t from-black/60 via-black/40 to-transparent p-6 rounded-lg">
                 <div className="text-sm text-white/60 uppercase tracking-wider mb-2">{activeProject.stack?.[0] || ''}</div>
                 <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2">{activeProject.name}</h3>
