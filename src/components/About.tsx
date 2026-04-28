@@ -21,9 +21,8 @@ export default function About() {
     const update = () => {
       const targetY = getLineY()
       const newHighlighted = new Set<string>()
-
-      let closestId: string | null = null
-      let closestDistance = Infinity
+      let closestHighlightedId: string | null = null
+      let closestHighlightedDistance = Infinity
 
       // Iterate through refs and decide which are above the 40% line
       skillRefsMap.current.forEach((el, skillId) => {
@@ -33,19 +32,21 @@ export default function About() {
         // 如果元素中心在40%线之上，则高亮
         if (center <= targetY) {
           newHighlighted.add(skillId)
-        }
-
-        const dist = Math.abs(center - targetY)
-        if (dist < closestDistance) {
-          closestDistance = dist
-          closestId = skillId
+          
+          // 在高亮的元素中找离40%线最近的
+          const dist = Math.abs(center - targetY)
+          if (dist < closestHighlightedDistance) {
+            closestHighlightedDistance = dist
+            closestHighlightedId = skillId
+          }
         }
       })
 
       setHighlightedIds((prev) => (areSetsEqual(prev, newHighlighted) ? prev : newHighlighted))
 
-      if (closestId && closestId !== selectedSkillId) {
-        setSelectedSkillId(closestId)
+      // 确保selectedSkillId是高亮集合中离40%线最近的，这样描述和高亮才会同步
+      if (closestHighlightedId && closestHighlightedId !== selectedSkillId) {
+        setSelectedSkillId(closestHighlightedId)
       }
 
       rafId = null
