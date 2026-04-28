@@ -2,7 +2,7 @@ export default function Hero() {
   const ringText = 'SCROLL DOWN SCROLL DOWN '
 
   return (
-    <section className="relative flex min-h-[72vh] w-full items-center px-0 pb-20 pt-8 sm:px-6">
+    <section className="relative flex min-h-[92vh] w-full items-center px-0 pb-20 pt-8 sm:px-6">
       <div className="max-w-2xl text-left">
         <p className="mb-4 inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1 text-xs uppercase tracking-[0.28em] text-cyan-200">
           Portfolio 2026
