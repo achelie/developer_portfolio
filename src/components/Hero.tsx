@@ -45,6 +45,16 @@ export default function Hero() {
           </svg>
         </span>
       </div>
+
+      <div className="absolute bottom-7 right-2 flex items-center gap-3 sm:right-6 xl:gap-5" aria-label="Open to work">
+        <div className="absolute -inset-2 rounded-full bg-white/5 blur-xl animate-pulse opacity-60" aria-hidden="true" />
+        <h3 className="relative z-10 text-sm font-normal uppercase tracking-[0.28em] text-white/90 sm:text-base xl:text-[26px] 2xl:text-[32px]">
+          Open to work
+        </h3>
+        <div className="relative z-10 grid h-7 w-7 place-items-center rounded-full border border-white/20 bg-white/5 sm:h-8 sm:w-8">
+          <span className="animate-spin-slow text-lg leading-none text-white">✶</span>
+        </div>
+      </div>
     </section>
   )
 }
