@@ -4,13 +4,8 @@ import { skills } from '../data/skills'
 export default function About() {
   const [selectedSkillId, setSelectedSkillId] = useState<string>(skills[0]?.id || '')
   const [highlightedIds, setHighlightedIds] = useState<Set<string>>(new Set())
-  const [isDescFixed, setIsDescFixed] = useState(false)
-  const [descTop, setDescTop] = useState(0)
-  const [descLeft, setDescLeft] = useState(0)
   const [isDescVisible, setIsDescVisible] = useState(true)
   const skillRefsMap = useRef<Map<string, HTMLParagraphElement>>(new Map())
-  const sectionRef = useRef<HTMLElement>(null)
-  const descContainerRef = useRef<HTMLDivElement>(null)
 
   const renderSkillName = (name: string, isActive: boolean) => {
     const chars = Array.from(name)
@@ -122,138 +117,33 @@ export default function About() {
      
   }, [areSetsEqual, selectedSkillId])
 
-  // 管理描述容器的fixed/relative定位
-  useEffect(() => {
-    let rafId: number | null = null
-
-    const updateDescPosition = () => {
-      if (!sectionRef.current || !descContainerRef.current) {
-        rafId = null
-        return
-      }
-
-      const sectionRect = sectionRef.current.getBoundingClientRect()
-      const sectionBottom = sectionRect.bottom
-      const sectionTop = sectionRect.top
-      const sectionLeft = sectionRect.left
-      const viewportHeight = window.innerHeight
-      const descHeight = descContainerRef.current.offsetHeight
-      const targetY = viewportHeight * 0.5 - descHeight / 2 // 视口中间，垂直居中
-
-      // 检查section是否在视口范围内
-      const sectionVisible = sectionBottom > 0 && sectionTop < viewportHeight
-
-      if (!sectionVisible) {
-        setIsDescFixed(false)
-        setDescTop(0)
-      } else {
-        // 计算fixed位置时，确保不超出section的上下边界
-        let fixedTop = targetY
-
-        // 如果超出section上边界，使用section的top位置
-        if (sectionTop > targetY) {
-          fixedTop = sectionTop
-        }
-
-        // 如果超出section下边界，调整使其不超过section底部
-        if (sectionTop + sectionRect.height - descHeight < targetY) {
-          fixedTop = sectionTop + sectionRect.height - descHeight
-        }
-
-        setIsDescFixed(true)
-        setDescTop(Math.max(0, fixedTop))
-        
-        // 更新left值用于fixed定位
-        setDescLeft(sectionLeft)
-      }
-
-      rafId = null
-    }
-
-    const onScroll = () => {
-      if (rafId != null) return
-      rafId = requestAnimationFrame(updateDescPosition)
-    }
-
-    updateDescPosition()
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll, { passive: true })
-
-    return () => {
-      if (rafId != null) cancelAnimationFrame(rafId)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [])
-
   return (
-    <section ref={sectionRef} className="w-full px-0 py-24 sm:px-6" id="about">
+    <section className="w-full px-0 py-24 sm:px-6" id="about">
       <div className="mb-10 flex items-end justify-between gap-4">
       </div>
 
-      <div className="grid gap-10 md:grid-cols-2 relative">
-        {/* 左侧描述容器，占位用 */}
-        <div className="md:h-full">
-          {/* 实际描述内容，根据isDescFixed切换fixed/relative */}
-          <div
-            ref={descContainerRef}
-            className={`${isDescFixed ? 'fixed' : 'relative'} pointer-events-none`}
-            style={
-              isDescFixed
-                ? {
-                    top: `${descTop}px`,
-                    left: `${descLeft}px`,
-                    width: 'calc(50% - 20px)',
-                  }
-                : {}
-            }
-          >
+      <div className="grid gap-10 md:grid-cols-2 relative items-stretch">
+        {/* 左侧描述容器：外层占满 About 高度，内层 sticky 65vh 到 section 底部才停止 */}
+        <div className="relative md:h-full md:pr-8">
+          <div className="pointer-events-none md:sticky md:top-[65vh]">
             <ul
-              className={`relative min-h-[12rem] transition-opacity duration-500 ease-out ${
+              className={`relative min-h-[12rem] w-full max-w-[22rem] transition-opacity duration-500 ease-out ${
                 isDescVisible && highlightedIds.size > 0
                   ? 'opacity-100 pointer-events-auto'
                   : 'opacity-0 pointer-events-none'
               }`}
             >
               {skills.map((skill) => (
-                <li
-                  key={skill.id}
-                  className={`absolute inset-0 flex items-center justify-start transition-all duration-300 ease-out ${
-                    selectedSkillId === skill.id
-                      ? 'opacity-100 translate-y-0 scale-100'
-                      : 'opacity-0 translate-y-3 scale-95'
-                  }`}
-                >
-                  <div>
-                    {(() => {
-                      const raw = skill.description || ''
-                      const parts = raw.split(/(?<=[。.!?])\s*/)
-                      const first = (parts[0] || '').trim()
-                      const second = parts.slice(1).join(' ').trim()
-                      // 视觉上 box 被翻转，当前是右句在先，左句在后，故这里颠倒渲染顺序
-                      return (
-                        <p
-                          className="max-w-[22rem] text-balance text-left text-base sm:text-lg leading-8 sm:leading-9 text-white/85 font-medium tracking-wide"
-                          style={{
-                            transform: 'rotate(-90deg)',
-                            whiteSpace: 'normal',
-                            display: 'inline-block',
-                          }}
-                        >
-                          {second ? (
-                            <>
-                              <span className="block">{second}</span>
-                              <span className="block mt-2">{first}</span>
-                            </>
-                          ) : (
-                            <span className="block">{first}</span>
-                          )}
-                        </p>
-                      )
-                    })()}
-                  </div>
-                </li>
+                selectedSkillId === skill.id ? (
+                  <li
+                    key={skill.id}
+                    className="flex items-start justify-start transition-all duration-300 ease-out opacity-100 translate-x-0 blur-0"
+                  >
+                    <p className="origin-top-left inline-block max-w-[22rem] -rotate-90 text-left text-base font-medium leading-8 tracking-wide text-white/85 sm:text-lg sm:leading-9">
+                      {skill.description}
+                    </p>
+                  </li>
+                ) : null
               ))}
             </ul>
           </div>
