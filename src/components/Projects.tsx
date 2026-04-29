@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { projects } from '../data/projects'
 
 export default function Projects() {
+  const navigate = useNavigate()
   const [active, setActive] = useState(0)
   const [displayedIndex, setDisplayedIndex] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
-    setIsVisible(false)
-
     const timer = window.setTimeout(() => {
       setDisplayedIndex(active)
       setIsVisible(true)
@@ -41,6 +41,7 @@ export default function Projects() {
                 onMouseEnter={() => setActive(idx)}
                 onFocus={() => setActive(idx)}
                 onTouchStart={() => setActive(idx)}
+                onClick={() => navigate(`/projects/${project.id}`)}
                 className={`text-left group flex flex-col items-start gap-2 transition-all duration-300 focus:outline-none ${
                   idx === active ? 'opacity-100' : 'opacity-40'
                 }`}
